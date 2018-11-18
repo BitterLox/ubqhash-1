@@ -37,6 +37,7 @@ import (
 	"runtime"
 	"sync"
 	"sync/atomic"
+	"strconv"
 	"time"
 	"unsafe"
 
@@ -116,11 +117,14 @@ func (cache *cache) compute(dagSize uint64, hash common.Hash, nonce uint64) (ok 
 	// the finalizer before the call completes.
 	_ = cache
 	
-	// log prints
-	fmt.Printf("hash:    \t%v | %x\n", hash, hash)
-	fmt.Printf("nonce:   \t%v | %x\n", nonce, nonce)
-	fmt.Printf("mixhash: \t%v | %x\n", ret.mix_hash, ret.mix_hash)
-	fmt.Printf("result:  \t%v | %x\n", ret.result, ret.result)
+	
+	v, _ := strconv.ParseBool(os.Getenv("DEBUG"))
+	if v {
+		fmt.Printf("hash:    \t%v | %x\n", hash, hash)
+		fmt.Printf("nonce:   \t%v | %x\n", nonce, nonce)
+		fmt.Printf("mixhash: \t%v | %x\n", ret.mix_hash, ret.mix_hash)
+		fmt.Printf("result:  \t%v | %x\n", ret.result, ret.result)
+	}
 	
 	return bool(ret.success), h256ToHash(ret.mix_hash), h256ToHash(ret.result)
 }
