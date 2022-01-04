@@ -35,15 +35,15 @@ import (
 	"os/user"
 	"path/filepath"
 	"runtime"
+	"strconv"
 	"sync"
 	"sync/atomic"
-	"strconv"
 	"time"
 	"unsafe"
 
-	"github.com/ubiq/go-ubiq/common"
-	"github.com/ubiq/go-ubiq/crypto"
-	"github.com/ubiq/go-ubiq/log"
+	"github.com/ubiq/go-ubiq/v6/common"
+	"github.com/ubiq/go-ubiq/v6/crypto"
+	"github.com/ubiq/go-ubiq/v6/log"
 )
 
 var (
@@ -115,8 +115,7 @@ func (cache *cache) compute(dagSize uint64, hash common.Hash, nonce uint64) (ok 
 	// This is important because a GC might happen and execute
 	// the finalizer before the call completes.
 	_ = cache
-	
-	
+
 	v, _ := strconv.ParseBool(os.Getenv("DEBUG"))
 	if v {
 		fmt.Printf("hash:    \t%v | %x\n", hash, hash)
@@ -124,7 +123,7 @@ func (cache *cache) compute(dagSize uint64, hash common.Hash, nonce uint64) (ok 
 		fmt.Printf("mixhash: \t%v | %x\n", ret.mix_hash, ret.mix_hash)
 		fmt.Printf("result:  \t%v | %x\n", ret.result, ret.result)
 	}
-	
+
 	return bool(ret.success), h256ToHash(ret.mix_hash), h256ToHash(ret.result)
 }
 
